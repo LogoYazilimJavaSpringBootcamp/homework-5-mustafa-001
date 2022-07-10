@@ -1,23 +1,30 @@
 package mutlu.movies.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jdk.jfr.Enabled;
 
 import javax.persistence.*;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "commentId")
 public class Comment {
     @Id
     @Column(name = "comment_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long commentId;
-    @ManyToOne
-    @JoinColumn()
-    private User user;
     private String text;
     @ManyToOne
     @JoinColumn()
-    @JsonBackReference
+    @JsonIdentityReference(alwaysAsId = true)
+    private User user;
+    @ManyToOne
+    @JoinColumn()
+//    @JsonBackReference
     private Movie movie;
 
     public User getUser() {

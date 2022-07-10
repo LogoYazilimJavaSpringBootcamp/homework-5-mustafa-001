@@ -27,7 +27,7 @@ public class UserService {
     public User update(User request, Long movieId){
        return  request;
     }
-    public void delete(Long userId){
-        userRepository.deleteById(userId);
+    public void delete(String username){
+        userRepository.deleteById(username);
     }
 }

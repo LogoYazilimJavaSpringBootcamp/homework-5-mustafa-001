@@ -1,10 +1,16 @@
 package mutlu.movies.entity;
 
 
+import com.fasterxml.jackson.annotation.*;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "movieId")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -15,21 +21,18 @@ public class Movie {
 
     @ManyToOne
     @JoinColumn()
+    @JsonIdentityReference(alwaysAsId = true)
     private User user;
 
     @OneToMany(mappedBy = "movie", orphanRemoval = true)
-    private Set<Comment> commentSet;
+    private List<Comment> commentList;
 
-    public Set<Comment> getCommentSet() {
-        return commentSet;
+    public Long getMovieId() {
+        return movieId;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setMovieId(Long movieId) {
+        this.movieId = movieId;
     }
 
     public String getName() {
@@ -40,11 +43,19 @@ public class Movie {
         this.name = name;
     }
 
-    public Long getMovieId() {
-        return movieId;
+    public User getUser() {
+        return user;
     }
 
-    public void setMovieId(Long movieId) {
-        this.movieId = movieId;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 }

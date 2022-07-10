@@ -1,48 +1,35 @@
 package mutlu.movies.entity;
 
+import com.fasterxml.jackson.annotation.*;
 import mutlu.movies.entity.Movie;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "users")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
 public class User {
-    private String email;
 
     @Id
     @Column(nullable = false)
     private String username;
+    private String email;
     private String passwordHash;
-    @OneToMany(mappedBy = "user")
-    private Set<Movie> movieSet;
     private LocalDateTime premiumUntil;
+    @OneToMany(mappedBy = "user")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<Movie> movies;
+
+
+    @JsonIgnore
     @Transient
     public boolean isPremium() {
-        if (premiumUntil == null){
+        if (premiumUntil == null) {
             return false;
         }
         return this.premiumUntil.isAfter(LocalDateTime.now());
-    }
-
-    public String getUserId() {
-        return email;
-    }
-
-    public void setUserId(String userId) {
-        this.email = userId;
-    }
-
-    public User() {
-        this.movieSet = Set.of();
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getUsername() {
@@ -53,6 +40,14 @@ public class User {
         this.username = username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPasswordHash() {
         return passwordHash;
     }
@@ -61,12 +56,12 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public Set<Movie> getMovieSet() {
-        return movieSet;
+    public List<Movie> getMovies() {
+        return movies;
     }
 
-    public void setMovieSet(Set<Movie> movieSet) {
-        this.movieSet = movieSet;
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
     }
 
     public LocalDateTime getPremiumUntil() {

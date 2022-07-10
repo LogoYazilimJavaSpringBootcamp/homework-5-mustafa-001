@@ -5,10 +5,10 @@ import mutlu.movies.entity.Comment;
 import mutlu.movies.entity.Movie;
 import mutlu.movies.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/movies")
@@ -16,15 +16,19 @@ public class MovieController {
     private MovieService movieService;
 
     @Autowired
-    public MovieController(MovieService movieService) {
+    public MovieController(MovieService movieService ) {
         this.movieService = movieService;
     }
 
-    @GetMapping("/{userId}")
-    public Collection<Movie> getByUserId(@PathVariable Long userId) {
-        return movieService.getByUserId(userId);
+    @GetMapping("/user/{userId}")
+    public Collection<Movie> getByUserId(@PathVariable String username) {
+        return movieService.getByUsername(username);
     }
 
+    @GetMapping("/{movieId}")
+    public Optional<Movie> getByMovieId(@PathVariable Long movieId) {
+        return movieService.getById(movieId);
+    }
     @PostMapping("/{movieId}")
     public Comment addComment(@RequestBody Comment comment, @PathVariable Long movieId) {
         return movieService.addComment(comment, movieId);
