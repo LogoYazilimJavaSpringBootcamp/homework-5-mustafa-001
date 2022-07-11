@@ -1,12 +1,12 @@
 package mutlu.movies.entity;
 
 import com.fasterxml.jackson.annotation.*;
-import mutlu.movies.entity.Movie;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
+
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity(name = "users")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
@@ -21,7 +21,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonIdentityReference(alwaysAsId = true)
     private List<Movie> movies;
-
 
     @JsonIgnore
     @Transient
