@@ -27,7 +27,7 @@ public class MovieService {
 
     public Movie create(Movie request) {
         var user = userRepository.findByUsername(request.getUser().getUsername()).orElseThrow();
-        System.out.println("Adding movie, user is: "+ user.getUsername());
+        System.out.println("Adding movie, user is: "+ user);
         Integer movieCount = movieRepository.numberOfMoviesByUserName(user.getUsername());
         System.out.println("Movies by this user: " + movieCount);
         if (movieCount <= 3 || user.isPremium()){

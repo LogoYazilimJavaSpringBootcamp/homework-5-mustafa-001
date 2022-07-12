@@ -1,5 +1,7 @@
 package mutlu.movies.service;
 
+import mutlu.movies.dto.ChangePasswordDto;
+import mutlu.movies.dto.ChangeUsernameDto;
 import mutlu.movies.dto.LoginCredentialsDto;
 import mutlu.movies.entity.User;
 import mutlu.movies.repository.UserRepository;
@@ -38,10 +40,15 @@ public class UserService {
     }
 
     public User login(LoginCredentialsDto credentialsDto) {
-        var userOpt = userRepository.findById(credentialsDto.getUsername());
+        return login(credentialsDto.getUsername(), credentialsDto.getPassword());
+    }
+
+    //Tries to log user in, if successful returns that User entity.
+    private User login(String username, String passwordHash) {
+        var userOpt = userRepository.findById(username);
         if (userOpt.isPresent()) {
             var user = userOpt.get();
-            if (passwordEncoder.matches(credentialsDto.getPassword(), user.getPasswordHash())) {
+            if (passwordEncoder.matches(passwordHash, user.getPasswordHash())) {
                 return user;
             } else {
                 throw new RuntimeException("Username or password is wrong.");
@@ -49,5 +56,25 @@ public class UserService {
         } else {
             throw new RuntimeException("Username or password is wrong.");
         }
+    }
+
+    public User changeUsername(ChangeUsernameDto usernameDto) {
+        //Authenticate the user.
+        var user = login(usernameDto.getUsername(), usernameDto.getPassword());
+        user.setUsername(usernameDto.getNewUsername());
+        userRepository.flush();
+        return user;
+    }
+
+    public User changePassword(ChangePasswordDto changePasswordDto){
+        //Authenticate the user.
+        var user = login(changePasswordDto.getUsername(), changePasswordDto.getPassword());
+        if (changePasswordDto.getFirstNewPassword().equals(changePasswordDto.getSecondNewPassword())){
+            user.setPasswordHash(passwordEncoder.encode(changePasswordDto.getFirstNewPassword()));
+            userRepository.flush();
+        } else {
+            throw new RuntimeException("The passwords does not match.");
+        }
+        return user;
     }
 }

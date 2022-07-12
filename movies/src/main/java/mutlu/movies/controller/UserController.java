@@ -1,6 +1,8 @@
 package mutlu.movies.controller;
 
 
+import mutlu.movies.dto.ChangePasswordDto;
+import mutlu.movies.dto.ChangeUsernameDto;
 import mutlu.movies.dto.LoginCredentialsDto;
 import mutlu.movies.entity.User;
 import mutlu.movies.service.UserService;
@@ -35,6 +37,16 @@ public class UserController {
     public User login(@RequestBody LoginCredentialsDto creditenalsDto){
         return userService.login(creditenalsDto);
     }
+
+    @PostMapping("/changeUsername")
+        public User changeUsername(@RequestBody ChangeUsernameDto changeUsernameDto){
+        return userService.changeUsername(changeUsernameDto);
+    }
+    @PostMapping("/changePassword")
+    public User changePassword(@RequestBody ChangePasswordDto changePasswordDto){
+        return userService.changePassword(changePasswordDto);
+    }
+
 
     @PostMapping("/{userId}")
     public User update(@RequestBody User request, @PathVariable Long userId) {
