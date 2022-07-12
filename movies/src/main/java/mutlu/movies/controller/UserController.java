@@ -1,9 +1,7 @@
 package mutlu.movies.controller;
 
 
-import mutlu.movies.dto.ChangePasswordDto;
-import mutlu.movies.dto.ChangeUsernameDto;
-import mutlu.movies.dto.LoginCredentialsDto;
+import mutlu.movies.dto.*;
 import mutlu.movies.entity.User;
 import mutlu.movies.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +49,10 @@ public class UserController {
     @PostMapping("/{userId}")
     public User update(@RequestBody User request, @PathVariable Long userId) {
         return userService.update(request, userId);
+    }
+    @PostMapping("/payment")
+    public User makePayment(@RequestBody PaymentDetailsDto paymentDetailsDto){
+        return userService.makePayment(paymentDetailsDto);
     }
 
     @DeleteMapping("/{userId}")

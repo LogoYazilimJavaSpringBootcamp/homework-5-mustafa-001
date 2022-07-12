@@ -3,12 +3,14 @@ package mutlu.movies.service;
 import mutlu.movies.dto.ChangePasswordDto;
 import mutlu.movies.dto.ChangeUsernameDto;
 import mutlu.movies.dto.LoginCredentialsDto;
+import mutlu.movies.dto.PaymentDetailsDto;
 import mutlu.movies.entity.User;
 import mutlu.movies.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -66,15 +68,28 @@ public class UserService {
         return user;
     }
 
-    public User changePassword(ChangePasswordDto changePasswordDto){
+    public User changePassword(ChangePasswordDto changePasswordDto) {
         //Authenticate the user.
         var user = login(changePasswordDto.getUsername(), changePasswordDto.getPassword());
-        if (changePasswordDto.getFirstNewPassword().equals(changePasswordDto.getSecondNewPassword())){
+        if (changePasswordDto.getFirstNewPassword().equals(changePasswordDto.getSecondNewPassword())) {
             user.setPasswordHash(passwordEncoder.encode(changePasswordDto.getFirstNewPassword()));
             userRepository.flush();
         } else {
             throw new RuntimeException("The passwords does not match.");
         }
         return user;
+    }
+
+    public User makePayment(PaymentDetailsDto paymentDetailsDto) {
+        var userOpt = userRepository.findById(paymentDetailsDto.getUserId());
+        if (userOpt.isPresent()) {
+            var user = userOpt.get();
+            //send rquest to payment service and wait for verification.
+            user.setPremiumUntil(LocalDateTime.now().plusMonths(paymentDetailsDto.getPaymentType().ordinal()));
+            userRepository.flush();
+            return user;
+        } else {
+            throw new RuntimeException("Username or password is wrong.");
+        }
     }
 }
