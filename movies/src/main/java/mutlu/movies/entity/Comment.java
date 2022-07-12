@@ -1,12 +1,10 @@
 package mutlu.movies.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jdk.jfr.Enabled;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @JsonIdentityInfo(
@@ -32,6 +30,14 @@ public class Comment {
     }
 
     public void setUser(User user) {
+        this.user = user;
+    }
+
+    //setter for user field to be used when deserializing from JSON.
+    @JsonProperty("user")
+    public void setUser(Long userId) {
+        var user = new User();
+        user.setUserId(userId);
         this.user = user;
     }
 

@@ -12,6 +12,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     Optional<Movie> findByName(String name);
 
-    @Query("select count(m) from Movie m where user_username = :username")
-    Integer numberOfMoviesByUserName(String username);
+    @Query("select count(m) from Movie m where user_user_id = :userId")
+    Integer numberOfMoviesByUserId(Long userId);
 }

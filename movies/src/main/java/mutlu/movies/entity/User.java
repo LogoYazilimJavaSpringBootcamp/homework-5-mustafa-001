@@ -2,6 +2,7 @@ package mutlu.movies.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import mutlu.movies.entity.Movie;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,12 +10,13 @@ import java.util.List;
 import java.util.Set;
 
 @Entity(name = "users")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User {
-
     @Id
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long userId;
     private String username;
+
     private String email;
     private String passwordHash;
     private LocalDateTime premiumUntil;
@@ -70,5 +72,13 @@ public class User {
 
     public void setPremiumUntil(LocalDateTime premiumUntil) {
         this.premiumUntil = premiumUntil;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

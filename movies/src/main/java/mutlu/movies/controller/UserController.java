@@ -23,9 +23,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{username}")
-    public Optional<User> getById(@PathVariable String username) {
-        return userService.getByUserId(username);
+    @GetMapping("/{userId}")
+    public Optional<User> getById(@PathVariable Long userId) {
+        return userService.getByUserId(userId);
     }
 
     @PostMapping
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public void delete(@PathVariable String userId) {
+    public void delete(@PathVariable Long userId) {
         userService.delete(userId);
     }
 }

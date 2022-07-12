@@ -26,9 +26,9 @@ public class MovieService {
     }
 
     public Movie create(Movie request) {
-        var user = userRepository.findByUsername(request.getUser().getUsername()).orElseThrow();
+        var user = userRepository.findById(request.getUser().getUserId()).orElseThrow();
         System.out.println("Adding movie, user is: "+ user);
-        Integer movieCount = movieRepository.numberOfMoviesByUserName(user.getUsername());
+        Integer movieCount = movieRepository.numberOfMoviesByUserId(user.getUserId());
         System.out.println("Movies by this user: " + movieCount);
         if (movieCount <= 3 || user.isPremium()){
             return movieRepository.save(request);
@@ -55,7 +55,7 @@ public class MovieService {
 
     public Comment addComment(Comment comment, Long movieId) {
 
-        var user = userRepository.findByUsername(comment.getUser().getUsername()).orElseThrow();
+        var user = userRepository.findById(comment.getUser().getUserId()).orElseThrow();
         if (!user.isPremium()){
            throw new RuntimeException("Adding comments requires to be paid user.");
         }

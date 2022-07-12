@@ -27,16 +27,16 @@ public class UserService {
         return userRepository.save(request);
     }
 
-    public Optional<User> getByUserId(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<User> getByUserId(Long userId) {
+        return userRepository.findById(userId);
     }
 
     public User update(User request, Long movieId) {
         return request;
     }
 
-    public void delete(String username) {
-        userRepository.deleteById(username);
+    public void delete(Long userId) {
+        userRepository.deleteById(userId);
     }
 
     public User login(LoginCredentialsDto credentialsDto) {
@@ -45,7 +45,7 @@ public class UserService {
 
     //Tries to log user in, if successful returns that User entity.
     private User login(String username, String passwordHash) {
-        var userOpt = userRepository.findById(username);
+        var userOpt = userRepository.findByUsername(username);
         if (userOpt.isPresent()) {
             var user = userOpt.get();
             if (passwordEncoder.matches(passwordHash, user.getPasswordHash())) {

@@ -6,11 +6,10 @@ import com.fasterxml.jackson.annotation.*;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "movieId")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "movieId")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -51,11 +50,12 @@ public class Movie {
         this.user = user;
     }
 
+    //setter for user field to be used when deserializing from JSON.
     @JsonProperty("user")
-    public void setUser(String username){
-        var user  = new User();
-        user.setUsername(username);
-        this.user =user;
+    public void setUser(Long userId) {
+        var user = new User();
+        user.setUserId(userId);
+        this.user = user;
     }
 
     public List<Comment> getCommentList() {
@@ -64,5 +64,15 @@ public class Movie {
 
     public void setCommentList(List<Comment> commentList) {
         this.commentList = commentList;
+    }
+
+    //set for commentList field to be used when deserializing from JSON.
+    @JsonProperty("commentList")
+    public void setCommentListByIds(List<Long> commentIdList) {
+        this.commentList.addAll(commentIdList.stream().map(id -> {
+            var c = new Comment();
+            c.setCommentId(id);
+            return c;
+        }).toList());
     }
 }
