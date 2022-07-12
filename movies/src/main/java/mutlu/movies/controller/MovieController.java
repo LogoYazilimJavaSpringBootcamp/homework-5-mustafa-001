@@ -13,14 +13,14 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
-    private MovieService movieService;
+    private final MovieService movieService;
 
     @Autowired
     public MovieController(MovieService movieService ) {
         this.movieService = movieService;
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user/{username}")
     public Collection<Movie> getByUserId(@PathVariable String username) {
         return movieService.getByUsername(username);
     }

@@ -16,7 +16,7 @@ import java.util.Optional;
 public class MovieService {
     private final MovieRepository movieRepository;
     private final CommentRepository commentRepository;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public MovieService(MovieRepository movieRepository, CommentRepository commentRepository, UserRepository userRepository) {
@@ -26,7 +26,15 @@ public class MovieService {
     }
 
     public Movie create(Movie request) {
-        return movieRepository.save(request);
+        var user = userRepository.findByUsername(request.getUser().getUsername()).orElseThrow();
+        System.out.println("Adding movie, user is: "+ user.getUsername());
+        Integer movieCount = movieRepository.numberOfMoviesByUserName(user.getUsername());
+        System.out.println("Movies by this user: " + movieCount);
+        if (movieCount <= 3 || user.isPremium()){
+            return movieRepository.save(request);
+        } else {
+            throw new RuntimeException("Adding more than 3 movies requires to be paid user.");
+        }
     }
 
     public Collection<Movie> getByUsername(String username) {
@@ -47,7 +55,10 @@ public class MovieService {
 
     public Comment addComment(Comment comment, Long movieId) {
 
-        var user = userRepository.findByUsername(comment.getUser().getUsername()).get();
+        var user = userRepository.findByUsername(comment.getUser().getUsername()).orElseThrow();
+        if (!user.isPremium()){
+           throw new RuntimeException("Adding comments requires to be paid user.");
+        }
         comment.setUser(user);
         var movie = movieRepository.findById(movieId);
         if (movie.isEmpty()) {

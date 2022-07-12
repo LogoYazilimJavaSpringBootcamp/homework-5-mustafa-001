@@ -1,6 +1,7 @@
 package mutlu.movies.controller;
 
 
+import mutlu.movies.dto.LoginCredentialsDto;
 import mutlu.movies.entity.User;
 import mutlu.movies.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
@@ -30,13 +31,18 @@ public class UserController {
         return userService.create(request);
     }
 
+    @PostMapping("/login")
+    public User login(@RequestBody LoginCredentialsDto creditenalsDto){
+        return userService.login(creditenalsDto);
+    }
+
     @PostMapping("/{userId}")
     public User update(@RequestBody User request, @PathVariable Long userId) {
         return userService.update(request, userId);
     }
 
     @DeleteMapping("/{userId}")
-    public void delete(@PathVariable String username) {
-        userService.delete(username);
+    public void delete(@PathVariable String userId) {
+        userService.delete(userId);
     }
 }

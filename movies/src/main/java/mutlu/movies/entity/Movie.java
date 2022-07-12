@@ -51,6 +51,13 @@ public class Movie {
         this.user = user;
     }
 
+    @JsonProperty("user")
+    public void setUser(String username){
+        var user  = new User();
+        user.setUsername(username);
+        this.user =user;
+    }
+
     public List<Comment> getCommentList() {
         return commentList;
     }
