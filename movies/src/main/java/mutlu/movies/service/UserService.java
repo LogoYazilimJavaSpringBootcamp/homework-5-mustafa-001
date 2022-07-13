@@ -3,25 +3,30 @@ package mutlu.movies.service;
 import mutlu.movies.dto.ChangePasswordDto;
 import mutlu.movies.dto.ChangeUsernameDto;
 import mutlu.movies.dto.LoginCredentialsDto;
-import mutlu.movies.dto.PaymentDetailsDto;
+import mutlu.movies.dto.PaymentDto;
 import mutlu.movies.entity.User;
 import mutlu.movies.repository.UserRepository;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AmqpTemplate rabbitTemplate;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AmqpTemplate rabbitTemplate) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     public User create(User request) {
@@ -80,13 +85,17 @@ public class UserService {
         return user;
     }
 
-    public User makePayment(PaymentDetailsDto paymentDetailsDto) {
+    public User makePayment(PaymentDto paymentDetailsDto) {
         var userOpt = userRepository.findById(paymentDetailsDto.getUserId());
         if (userOpt.isPresent()) {
             var user = userOpt.get();
             //send rquest to payment service and wait for verification.
-            user.setPremiumUntil(LocalDateTime.now().plusMonths(paymentDetailsDto.getPaymentType().ordinal()));
-            userRepository.flush();
+            var reply = (Boolean) rabbitTemplate.convertSendAndReceive("movies.payment.request", user);
+            System.out.println("Reply from payment service: " + reply);
+            if (reply) {
+                user.setPremiumUntil(LocalDateTime.now().plusMonths(paymentDetailsDto.getPaymentType().ordinal()));
+                userRepository.flush();
+            }
             return user;
         } else {
             throw new RuntimeException("Username or password is wrong.");

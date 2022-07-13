@@ -51,7 +51,7 @@ public class UserController {
         return userService.update(request, userId);
     }
     @PostMapping("/payment")
-    public User makePayment(@RequestBody PaymentDetailsDto paymentDetailsDto){
+    public User makePayment(@RequestBody PaymentDto paymentDetailsDto){
         return userService.makePayment(paymentDetailsDto);
     }
 

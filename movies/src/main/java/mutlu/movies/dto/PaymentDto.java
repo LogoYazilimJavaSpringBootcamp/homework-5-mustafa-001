@@ -1,6 +1,6 @@
 package mutlu.movies.dto;
 
-public class PaymentDetailsDto {
+public class PaymentDto {
     private Long userId;
     private PaymentType paymentType;
 

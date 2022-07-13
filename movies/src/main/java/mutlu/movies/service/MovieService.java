@@ -5,6 +5,7 @@ import mutlu.movies.entity.Movie;
 import mutlu.movies.repository.CommentRepository;
 import mutlu.movies.repository.MovieRepository;
 import mutlu.movies.repository.UserRepository;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,14 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
+    private final AmqpTemplate rabbitTemplate;
 
     @Autowired
-    public MovieService(MovieRepository movieRepository, CommentRepository commentRepository, UserRepository userRepository) {
+    public MovieService(MovieRepository movieRepository, CommentRepository commentRepository, UserRepository userRepository, AmqpTemplate rabbitTemplate) {
         this.movieRepository = movieRepository;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     public Movie create(Movie request) {
@@ -31,7 +34,14 @@ public class MovieService {
         Integer movieCount = movieRepository.numberOfMoviesByUserId(user.getUserId());
         System.out.println("Movies by this user: " + movieCount);
         if (movieCount <= 3 || user.isPremium()){
+            try {
+//                rabbitTemplate.convertAndSend("movies.email", new EmailDto(request.getName(), request.getUser())
+            } catch (Exception c) {
+                System.out.println("RabbitMQ connection refused. Continuing.");
+            }
+
             return movieRepository.save(request);
+
         } else {
             throw new RuntimeException("Adding more than 3 movies requires to be paid user.");
         }
