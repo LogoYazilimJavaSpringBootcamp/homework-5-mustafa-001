@@ -4,6 +4,11 @@ public class PaymentDto {
     private Long userId;
     private PaymentType paymentType;
 
+    public PaymentDto(long userId, PaymentType paymentType) {
+        this.userId = userId;
+        this.paymentType = paymentType;
+    }
+
     public Long getUserId() {
         return userId;
     }
