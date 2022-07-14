@@ -1,5 +1,6 @@
 package mutlu.movies.service;
 
+import mutlu.movies.dto.EmailDto;
 import mutlu.movies.entity.Comment;
 import mutlu.movies.entity.Movie;
 import mutlu.movies.repository.CommentRepository;
@@ -30,17 +31,19 @@ public class MovieService {
 
     public Movie create(Movie request) {
         var user = userRepository.findById(request.getUser().getUserId()).orElseThrow();
-        System.out.println("Adding movie, user is: "+ user);
+        System.out.println("Adding movie, user is: " + user);
         Integer movieCount = movieRepository.numberOfMoviesByUserId(user.getUserId());
         System.out.println("Movies by this user: " + movieCount);
-        if (movieCount <= 3 || user.isPremium()){
-            try {
-//                rabbitTemplate.convertAndSend("movies.email", new EmailDto(request.getName(), request.getUser())
-            } catch (Exception c) {
-                System.out.println("RabbitMQ connection refused. Continuing.");
-            }
-
+        if (movieCount <= 3 || user.isPremium()) {
+            userRepository.findAll().forEach(registeredUser -> {
+                try {
+                    rabbitTemplate.convertAndSend("movies.email", new EmailDto(registeredUser.getEmail(), registeredUser.getUsername(), request.getName(), "Film hakkında açıklama."));
+                } catch (Exception c) {
+                    System.out.println("RabbitMQ connection refused. Continuing.");
+                }
+            });
             return movieRepository.save(request);
+
 
         } else {
             throw new RuntimeException("Adding more than 3 movies requires to be paid user.");
@@ -66,8 +69,8 @@ public class MovieService {
     public Comment addComment(Comment comment, Long movieId) {
 
         var user = userRepository.findById(comment.getUser().getUserId()).orElseThrow();
-        if (!user.isPremium()){
-           throw new RuntimeException("Adding comments requires to be paid user.");
+        if (!user.isPremium()) {
+            throw new RuntimeException("Adding comments requires to be paid user.");
         }
         comment.setUser(user);
         var movie = movieRepository.findById(movieId);
