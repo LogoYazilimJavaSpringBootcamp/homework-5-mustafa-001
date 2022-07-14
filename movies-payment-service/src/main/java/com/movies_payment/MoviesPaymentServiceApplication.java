@@ -14,7 +14,7 @@ public class MoviesPaymentServiceApplication {
 
 	public MoviesPaymentServiceApplication(PaymentRepository paymentRepository) {
 		this.paymentRepository = paymentRepository;
-		paymentRepository.save(PaymentDtoPaymentMapper.toEntity(new PaymentDto(1, PaymentType.ONE_MONTH)));
+		// paymentRepository.save(PaymentDtoPaymentMapper.toEntity(new PaymentDto(1, PaymentType.ONE_MONTH)));
 	}
 
 

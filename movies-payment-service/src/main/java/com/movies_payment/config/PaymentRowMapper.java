@@ -1,15 +1,22 @@
 package com.movies_payment.config;
 
+import com.movies_payment.dto.PaymentType;
 import com.movies_payment.entity.Payment;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 
 public class PaymentRowMapper implements RowMapper<Payment> {
     @Override
     public Payment mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return null;
+        Payment result = new Payment();
+        result.setPaymentId(rs.getLong("payment_id"));
+        result.setPaymentTime(rs.getTimestamp("payment_date").toLocalDateTime());
+        result.setPaymentType(PaymentType.valueOf(rs.getInt("payment_type")));
+        result.setUserId(rs.getLong("user_id"));
+        return result;
     }
 }

@@ -90,7 +90,7 @@ public class UserService {
         if (userOpt.isPresent()) {
             var user = userOpt.get();
             //send rquest to payment service and wait for verification.
-            var reply = (Boolean) rabbitTemplate.convertSendAndReceive("movies.payment.request", user);
+            var reply = (Boolean) rabbitTemplate.convertSendAndReceive("movies.payment.request", paymentDetailsDto);
             System.out.println("Reply from payment service: " + reply);
             if (reply) {
                 user.setPremiumUntil(LocalDateTime.now().plusMonths(paymentDetailsDto.getPaymentType().ordinal()));

@@ -20,7 +20,7 @@ public class PaymentRequestListener {
 		var result = true;
 		System.out.println(" [.] Returned " + result);
 		//TODO Save this request to database.
-		paymentRepository.save(PaymentDtoPaymentMapper.toEntity(paymentDto));
+		System.out.println("Added to database: " + paymentRepository.save(PaymentDtoPaymentMapper.toEntity(paymentDto)));
 		return result;
 	}
 

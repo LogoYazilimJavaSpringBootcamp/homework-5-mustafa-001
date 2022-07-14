@@ -1,13 +1,14 @@
 package com.movies_payment.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PaymentDto {
     private Long userId;
     private PaymentType paymentType;
 
-    public PaymentDto(long userId, PaymentType paymentType) {
-        this.userId = userId;
-        this.paymentType = paymentType;
+    public PaymentDto() {
     }
+
 
     public Long getUserId() {
         return userId;
@@ -24,4 +25,9 @@ public class PaymentDto {
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
     }
+
+    // @JsonProperty("paymentType")
+    // public void setPaymentType(Integer paymentTypeOrdinal){
+    //     this.paymentType = PaymentType.valueOf(paymentTypeOrdinal);
+    // }
 }

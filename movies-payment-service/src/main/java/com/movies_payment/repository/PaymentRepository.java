@@ -1,5 +1,6 @@
 package com.movies_payment.repository;
 
+import com.movies_payment.config.PaymentRowMapper;
 import com.movies_payment.dto.PaymentDto;
 import com.movies_payment.entity.Payment;
 
@@ -27,18 +28,25 @@ public class PaymentRepository {
         this.insert.usingGeneratedKeyColumns("payment_id");
     }
 
-    public Payment save(Payment paymentDto){
-//        jdbcTemplate.update("INSERT INTO payment(user_id, payment_type) values (?, ?)", paymentDto.getUserId(), paymentDto.getPaymentType().ordinal());
+    public Payment save(Payment payment) {
+        // jdbcTemplate.update("INSERT INTO payment(user_id, payment_type) values (?,
+        // ?)", paymentDto.getUserId(), paymentDto.getPaymentType().ordinal());
         var parameters = new HashMap<String, Object>();
-        parameters.put("user_id", paymentDto.getUserId());
-        parameters.put("payment_type", paymentDto.getPaymentType().ordinal());
-        parameters.put("payment_date", Timestamp.valueOf(paymentDto.getPaymentTime()));
+        parameters.put("user_id", payment.getUserId());
+        parameters.put("payment_type", payment.getPaymentType().ordinal());
+        parameters.put("payment_date", Timestamp.valueOf(payment.getPaymentTime()));
 
-        var id =  insert.executeAndReturnKey(parameters);
-        return null; //findById(id).orElseThrow(() -> new IllegalStateException(""));
+        Number id = insert.executeAndReturnKey(parameters);
+        return findById(id).orElseThrow(() -> new IllegalStateException(""));
     }
 
-    private Optional<Payment> findById(Number id) {
-        return Optional.empty();
+    public Optional<Payment> findById(Number id) {
+        Payment payment = jdbcTemplate.queryForObject("select * from payment where payment_id = ?", new PaymentRowMapper(),
+                id);
+        if (payment == null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(payment);
+        }
     }
 }

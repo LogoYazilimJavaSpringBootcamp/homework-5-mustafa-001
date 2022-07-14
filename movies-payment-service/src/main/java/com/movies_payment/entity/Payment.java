@@ -17,7 +17,7 @@ public class Payment {
     private LocalDateTime paymentTime;
 
     public Long getUserId() {
-        return paymentId;
+        return this.userId;
     }
     public void setPaymentId(Long paymentId) {
         this.paymentId = paymentId;
@@ -36,5 +36,13 @@ public class Payment {
     }
     public void setPaymentTime(LocalDateTime paymentTime) {
         this.paymentTime = paymentTime;
+    }
+    @Override
+    public String toString() {
+        return "Payment [paymentId=" + paymentId + ", paymentTime=" + paymentTime + ", paymentType=" + paymentType
+                + ", userId=" + userId + "]";
+    }
+    public Long getPaymentId() {
+        return paymentId;
     }
 }
