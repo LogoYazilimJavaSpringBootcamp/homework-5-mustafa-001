@@ -22,7 +22,7 @@ public class Comment {
     private User user;
     @ManyToOne
     @JoinColumn()
-//    @JsonBackReference
+    @JsonIdentityReference(alwaysAsId = true)
     private Movie movie;
 
     public User getUser() {
@@ -46,6 +46,14 @@ public class Comment {
     }
 
     public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    //Setter for movie to be used when deserializing from JSON.
+    @JsonProperty("movie")
+    public void setMovie(Long movieId){
+        var movie = new Movie();
+        movie.setMovieId(movieId);
         this.movie = movie;
     }
 

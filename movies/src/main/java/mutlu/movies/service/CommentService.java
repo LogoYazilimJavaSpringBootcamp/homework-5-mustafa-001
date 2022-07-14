@@ -2,6 +2,7 @@ package mutlu.movies.service;
 
 import mutlu.movies.entity.Comment;
 import mutlu.movies.repository.CommentRepository;
+import mutlu.movies.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +12,21 @@ import java.util.Optional;
 @Service
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CommentService(CommentRepository userRepository) {
-        this.commentRepository = userRepository;
+    public CommentService(CommentRepository commentRepository, UserRepository userRepository) {
+        this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
     }
 
 
     public Comment create(Comment request) {
+        var user = userRepository.findById(request.getUser().getUserId()).orElseThrow();
+        if (!user.isPremium()) {
+            throw new RuntimeException("Adding comments requires to be paid user.");
+        }
+        request.setUser(user);
         return commentRepository.save(request);
     }
 

@@ -29,15 +29,7 @@ public class MovieController {
     public Optional<Movie> getByMovieId(@PathVariable Long movieId) {
         return movieService.getById(movieId);
     }
-    @PostMapping("/{movieId}")
-    public Comment addComment(@RequestBody Comment comment, @PathVariable Long movieId) {
-        return movieService.addComment(comment, movieId);
-    }
 
-    @DeleteMapping("/{movieId}/{commentId}")
-    public void removeComment(@PathVariable Long movieId, @PathVariable Long commentId) {
-        movieService.removeComment(commentId, movieId);
-    }
 
     @PostMapping
     public Movie add(@RequestBody Movie request) {

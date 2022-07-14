@@ -66,31 +66,4 @@ public class MovieService {
         movieRepository.deleteById(movieId);
     }
 
-    public Comment addComment(Comment comment, Long movieId) {
-
-        var user = userRepository.findById(comment.getUser().getUserId()).orElseThrow();
-        if (!user.isPremium()) {
-            throw new RuntimeException("Adding comments requires to be paid user.");
-        }
-        comment.setUser(user);
-        var movie = movieRepository.findById(movieId);
-        if (movie.isEmpty()) {
-            throw new InvalidParameterException();
-        }
-        comment.setMovie(movie.get());
-        var c = commentRepository.save(comment);
-        movie.get().getCommentList().add(c);
-        return c;
-    }
-
-    public void removeComment(Long commentId, Long movieId) {
-        var movie = movieRepository.findById(movieId);
-        var comment = commentRepository.findById(commentId);
-        if (movie.isEmpty() || comment.isEmpty()) {
-            throw new InvalidParameterException();
-        }
-        commentRepository.delete(comment.get());
-        movie.get().getCommentList().remove(comment.get());
-
-    }
 }
