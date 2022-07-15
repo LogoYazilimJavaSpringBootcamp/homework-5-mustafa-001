@@ -1,7 +1,33 @@
 ## **HOMEWORK-5**
 1. Spring Profile nedir? Properties ya da yml dosya formları ile isbasi uygulamasına test
 profile ekleyin.(5 Puan)
+
+Spring Profile uygulamanın farklı versiyonları/aşamalarında çalışacak Bean'leri seçmemize yarayan teknolojidir.
+Örneğin dev ve production profilleri belirleyerek geliştirme ve canlı aşamalarında farklı veritabanı konfigürasyonları kullanabiliriz. Yada testler sırasında farklı bir profile ait kodu kullanabiliriz.
+
+`@Profile` anotasyonu, XML'de tanımlayarak bir bean'in hangi profile ait olduğunu belirtebiliriz. 
+`context.setInıtParameter("spring.profile.active", "dev") metodu, web.xml, JVM parametresii, ortam değişkeni yada Maven ile o an aktif olan profili seçebiliriz. Örn:
+
+```
+@Profile("dev")
+public class DataGenerator {
+```
+Burada DataGenerator sınıfı verilen profile göre çalışıp çalışmayacaktır. [DataGenerator](movies/src/main/java/mutlu/movies/config/DataGenerator.java)
+
+
+movies/src/main/resources/application.properties
+
+https://www.baeldung.com/spring-profiles
+
+
 2. SQL injection örnekleyin. Nasıl korunabiliriz?(5 Puan)
+
+SQL injection kullanıcı girdisine göre oluşturulan SQL komutlarının istenilen dışında veritabanına zarar verebilecek SQL komutlarının çalıştırılmasıdır. Örneğin `"SELECT * FROM users WHERE name = ?"` komutunda kullanıcıdan bir isim onu kullanmak üzere tasarlanmışken gelen bir `isim; DROP TABLE users;` komutu veritabanının users tablosunun silinmesine neden olur.
+
+Korunmak için veritabanı kullanıcı ve yetki kontrolü,  Data Sanitization, `NamedTemplate`, SQL escaping gibi yöntemler kullanılabilir. Burada ana mantık kullanıcıdan gelen girdinin SQL'de komut olarak çalıştırlmasını engellemektdir.
+
+https://www.baeldung.com/sql-injection
+
 3. Aşağıdaki kurallara göre bir film öneri uygulaması yazın. (90 Puan)
 
 ### **Teknolojiler;**
