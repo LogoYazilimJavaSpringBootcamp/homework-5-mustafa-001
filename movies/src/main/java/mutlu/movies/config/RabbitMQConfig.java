@@ -19,8 +19,6 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.payment.request.queue}")
     private String paymentRequest;
 
-    @Value("${rabbitmq.payment.reply.queue}")
-    private String paymentReply;
     @Value("${rabbitmq.email.queue}")
     private String email;
 

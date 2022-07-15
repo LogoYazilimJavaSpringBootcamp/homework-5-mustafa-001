@@ -1,6 +1,12 @@
 package mutlu.movies.dto;
 
 
+import mutlu.movies.entity.Movie;
+
+/**
+ * Dto to used when sending a email request to message queue.
+ * {@link mutlu.movies.service.MovieService#create(Movie)}
+ */
 public class EmailDto {
     private String email;
     private String name;

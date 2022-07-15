@@ -1,5 +1,9 @@
 package mutlu.movies.dto;
 
+/**
+ * Dto to send from client when requesting a login.
+ * {@link mutlu.movies.controller.UserController#login(LoginCredentialsDto)}
+ */
 public class LoginCredentialsDto {
     private String username;
     private String password;

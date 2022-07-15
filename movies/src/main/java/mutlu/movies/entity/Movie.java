@@ -8,7 +8,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Entity representing a movie users added to ty system.
+ */
 @Entity
+//When another entity includes a Movie field when serializng/deserialing refer that field with it movieId
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "movieId")
 public class Movie {
     @Id

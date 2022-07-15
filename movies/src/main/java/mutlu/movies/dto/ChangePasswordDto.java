@@ -1,5 +1,9 @@
 package mutlu.movies.dto;
 
+/**
+ * Dto to be send from client on password change requests.
+ * {@link mutlu.movies.controller.UserController#changePassword(ChangePasswordDto)}
+ */
 public class ChangePasswordDto {
     private String username;
     private String password;

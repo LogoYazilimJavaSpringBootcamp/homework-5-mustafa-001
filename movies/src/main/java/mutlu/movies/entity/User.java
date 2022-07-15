@@ -1,15 +1,19 @@
 package mutlu.movies.entity;
 
-import com.fasterxml.jackson.annotation.*;
-import mutlu.movies.entity.Movie;
-import org.springframework.lang.NonNull;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
+/**
+ * Entity representing a user. Includes both account information (login etc) and usage details.
+ */
 @Entity(name = "users")
+//When another entity includes a User field when serializng/deserialing refer that field with it userId.
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User {
     @Id
@@ -20,11 +24,22 @@ public class User {
     private String email;
     private String passwordHash;
     private LocalDateTime premiumUntil;
+
+    //Doesn't need setter with @JsonPreference annotation and a
+    // List<Long> argument as Movie.comments field because we don't ever
+    // need to deserialize a User with Comment and Movie already filled.
     @OneToMany(mappedBy = "user")
     @JsonIdentityReference(alwaysAsId = true)
     private List<Movie> movies;
 
+    @OneToMany(mappedBy = "user")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<Comment> comments;
 
+
+    /**
+     * @return True if this user stil a Paid User.
+     */
     @JsonIgnore
     @Transient
     public boolean isPremium() {
@@ -91,5 +106,13 @@ public class User {
                 ", premiumUntil=" + premiumUntil +
                 ", movies=" + movies +
                 '}';
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

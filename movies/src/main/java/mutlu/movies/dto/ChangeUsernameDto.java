@@ -1,5 +1,9 @@
 package mutlu.movies.dto;
 
+/**
+ * Dto to be send from client on username change requests.
+ * {@link mutlu.movies.controller.UserController#changeUsername(ChangeUsernameDto)}
+ */
 public class ChangeUsernameDto {
     private String username;
     private String newUsername;

@@ -15,6 +15,10 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     List<Movie> findByUser_Username(String username);
 
+    /**
+     * @param userId
+     * @return Number of movies added to system by given User with userId.
+     */
     @Query("select count(m) from Movie m where user_user_id = :userId")
     Integer numberOfMoviesByUserId(Long userId);
 }

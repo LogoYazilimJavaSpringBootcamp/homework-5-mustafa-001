@@ -1,28 +1,33 @@
 package mutlu.movies.entity;
 
-import com.fasterxml.jackson.annotation.*;
-import jdk.jfr.Enabled;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
-import java.util.List;
 
+/**
+ * Entity representing a comment user makes.
+ */
 @Entity
+//When another entity includes a Comment field when serializng/deserialing refer that field with it userId.
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "commentId")
 public class Comment {
     @Id
-    @Column(name = "comment_id", nullable = false)
+    @Column( nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long commentId;
     private String text;
     @ManyToOne
     @JoinColumn()
-    @JsonIdentityReference(alwaysAsId = true)
+    @JsonIdentityReference(alwaysAsId = true) //When serializing refer with userId.
     private User user;
     @ManyToOne
     @JoinColumn()
-    @JsonIdentityReference(alwaysAsId = true)
+    @JsonIdentityReference(alwaysAsId = true) //When serializing refer with movieId.
     private Movie movie;
 
     public User getUser() {
