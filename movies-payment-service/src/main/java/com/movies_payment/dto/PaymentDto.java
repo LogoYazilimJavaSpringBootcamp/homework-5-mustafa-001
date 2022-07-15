@@ -25,9 +25,4 @@ public class PaymentDto {
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
     }
-
-    // @JsonProperty("paymentType")
-    // public void setPaymentType(Integer paymentTypeOrdinal){
-    //     this.paymentType = PaymentType.valueOf(paymentTypeOrdinal);
-    // }
 }

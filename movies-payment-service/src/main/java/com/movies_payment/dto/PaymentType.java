@@ -10,14 +10,15 @@ public enum PaymentType {
 
     private final int value;
 
-    PaymentType(int value){
+    PaymentType(int value) {
         this.value = value;
     }
-    public static PaymentType valueOf(int value){
+
+    public static PaymentType valueOf(int value) {
         return Arrays.stream(values())
-        .filter(paymentType -> paymentType.value == value)
-        .findFirst()
-        .orElse(null);
+                .filter(paymentType -> paymentType.value == value)
+                .findFirst()
+                .orElse(null);
     }
 
 }
