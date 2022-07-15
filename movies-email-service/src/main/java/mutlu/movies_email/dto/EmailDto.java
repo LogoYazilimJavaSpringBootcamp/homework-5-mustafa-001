@@ -1,5 +1,9 @@
 package mutlu.movies_email.dto;
 
+/**
+ * Dto to used when sending a email request to message queue.
+ */
+
 public class EmailDto {
     private String email;
     private String name;
