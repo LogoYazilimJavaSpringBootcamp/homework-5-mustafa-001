@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+/**
+ * Entity representing a payment saved to database.
+ */
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

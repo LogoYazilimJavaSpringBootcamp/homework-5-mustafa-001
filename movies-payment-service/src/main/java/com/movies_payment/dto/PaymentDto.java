@@ -1,14 +1,12 @@
 package com.movies_payment.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+/**
+ * Dto to be send from client and to be send to payment service when requesting a payment process.
+ * {@link com.movies_payment.listener.PaymentRequestListener#paymentRequestListener(PaymentDto)}
+ */
 public class PaymentDto {
     private Long userId;
     private PaymentType paymentType;
-
-    public PaymentDto() {
-    }
-
 
     public Long getUserId() {
         return userId;

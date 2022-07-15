@@ -10,11 +10,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class MoviesPaymentServiceApplication {
-	private PaymentRepository paymentRepository;
 
 	public MoviesPaymentServiceApplication(PaymentRepository paymentRepository) {
-		this.paymentRepository = paymentRepository;
-		// paymentRepository.save(PaymentDtoPaymentMapper.toEntity(new PaymentDto(1, PaymentType.ONE_MONTH)));
+		var samplePayment = new PaymentDto();
+		samplePayment.setPaymentType(PaymentType.TWELVE_MONTHS);
+		samplePayment.setUserId(1L);
+		paymentRepository.save(PaymentDtoPaymentMapper.toEntity(samplePayment));
 	}
 
 

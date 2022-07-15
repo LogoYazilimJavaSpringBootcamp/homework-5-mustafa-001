@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 public enum PaymentType {
     ONE_MONTH(1),
-    THREE_MONTH(3),
-    SIX_MONTH(6),
-    TWELVE_MONTH(12);
+    THREE_MONTHS(3),
+    SIX_MONTHS(6),
+    TWELVE_MONTHS(12);
 
     private final int value;
 
@@ -14,11 +14,18 @@ public enum PaymentType {
         this.value = value;
     }
 
-    public static PaymentType valueOf(int value) {
+    /**
+     * @param months Number of months in integer.
+     * @return Corresponding enum value to given months.
+     */
+    public static PaymentType valueOf(int months) {
         return Arrays.stream(values())
-                .filter(paymentType -> paymentType.value == value)
+                .filter(paymentType -> paymentType.value == months)
                 .findFirst()
                 .orElse(null);
+    }
+    public int getValue(){
+        return this.value;
     }
 
 }
