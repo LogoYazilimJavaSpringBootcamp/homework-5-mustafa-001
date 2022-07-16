@@ -11,7 +11,7 @@ import javax.persistence.*;
  * Entity representing a comment user makes.
  */
 @Entity
-//When another entity includes a Comment field when serializng/deserialing refer that field with it userId.
+//When another entity includes a Comment field when serializing/deserialing refer that field with it userId.
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "commentId")
