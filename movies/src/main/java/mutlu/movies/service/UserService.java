@@ -130,11 +130,15 @@ public class UserService {
             log.info("Reply from payment service: {} ", reply);
             if (reply == null) {
                 log.info("No response came from payment service.");
+                throw new RuntimeException("An error occurred when processing payment.");
             } else if (reply) {
                 log.debug("userId: {}, premiumUntil: {}", user.getUserId(), user.getPremiumUntil());
                 user.setPremiumUntil(LocalDateTime.now().plusMonths(paymentDetailsDto.getPaymentType().ordinal()));
                 userRepository.flush();
                 log.info("Updated user to {}", user);
+            } else if (!reply){
+                log.info("Payment service didn't authorize payment.");
+                throw new RuntimeException("An error occurred when processing payment.");
             }
             return user;
         } else {

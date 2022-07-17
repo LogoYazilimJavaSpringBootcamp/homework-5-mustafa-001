@@ -40,7 +40,7 @@ public class DataGenerator {
             log.debug("Database already contains data, skipping to add samples.");
             return;
         }
-        log.info("Database is empty, filling with empty data.");
+        log.info("Database is empty, filling with sample data.");
         User user1 = new User();
         user1.setEmail("user1@email.com");
         user1.setPasswordHash("sdadfjasljdflsakjdfkasjdfkasjd");

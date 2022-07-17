@@ -15,7 +15,7 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 @Configuration
 public class RabbitMQListenerConfig implements RabbitListenerConfigurer {
 
-	@Value("${rabbitmq.email}")
+	@Value("${rabbitmq.email.queue}")
     private String paymentRequest;
 
     @Value("${rabbitmq.exchange}")

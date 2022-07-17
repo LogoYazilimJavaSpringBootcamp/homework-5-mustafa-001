@@ -28,13 +28,24 @@ https://www.baeldung.com/spring-profiles
 
 SQL injection kullanıcı girdisine göre oluşturulan SQL komutlarının istenilen dışında veritabanına zarar verebilecek SQL komutlarının çalıştırılmasıdır. Örneğin `"SELECT * FROM users WHERE name = ?"` komutunda kullanıcıdan bir isim onu kullanmak üzere tasarlanmışken gelen bir `isim; DROP TABLE users;` komutu veritabanının users tablosunun silinmesine neden olur.
 
+```
+//Eğer client paymentId değişkenini gönderirken "5; drop table payments;" gönderirse tüm tablo silinir.
+String paymentId = 5;
+ jdbcTemplate.queryForObject("select * from payment where payment_id = "+ paymentId , new PaymentRowMapper(),
+```
+
 Korunmak için veritabanı kullanıcı ve yetki kontrolü,  Data Sanitization, `NamedTemplate`, SQL escaping gibi yöntemler kullanılabilir. Burada ana mantık kullanıcıdan gelen girdinin SQL'de komut olarak çalıştırlmasını engellemektdir.
 
 https://www.baeldung.com/sql-injection
 
 3. Aşağıdaki kurallara göre bir film öneri uygulaması yazın. (90 Puan)
 
-Sistem localhost:8080'de çalışır. Ödeme servisi 8081'de, e-posta servisi 8082'de çalışır.
+Ana uygulama localhost:8080'de çalışır.  Bağımlı olduğu movies-payment-service containerda 8081'de, movies-email-service 8082'de çalışır.
+Ayrıca uygulama PostgreSQL, RabbitMQ ve MongoDB bağımlılıkları containerda çalışmasını bekliyor. Uygulamayı çalıştırmak için:
+
+1. [package.sh](package.sh) betiğini çalıştırın yada her servis için `./mvnw clean package` deyin.
+2. `docker compose up --build` deyin. [docker-compose.yml](docker-compose.yml) 'daki containerlar ayağa kalkacaktır.
+
 http://localhost:8080/index.html 'de SwaggerUI dokümantasyonu var. Ödevde istenilen gereksinimlerin koddaki karşılıkları her bir maddenin altında linklenmiştir.
 
 ### **Teknolojiler;**
