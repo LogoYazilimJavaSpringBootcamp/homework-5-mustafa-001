@@ -47,7 +47,7 @@ Ayrıca uygulama PostgreSQL, RabbitMQ ve MongoDB bağımlılıklarının contain
 2. `docker compose up --build` deyin. [docker-compose.yml](docker-compose.yml) 'daki containerlar ayağa kalkacaktır.
 
 
-http://localhost:8080/index.html 'de SwaggerUI dokümantasyonu var. Ödevde istenilen gereksinimlerin koddaki karşılıkları her bir maddenin altında linklenmiştir.
+http://localhost:8080/swagger-ui/index.html 'de SwaggerUI dokümantasyonu var. Ödevde istenilen gereksinimlerin koddaki karşılıkları her bir maddenin altında linklenmiştir.
 
 
 ### **Teknolojiler;**
