@@ -15,10 +15,8 @@ public class DataGenerator {
 ```
 Burada DataGenerator sınıfı verilen profile göre çalışıp çalışmayacaktır. [DataGenerator](movies/src/main/java/mutlu/movies/config/DataGenerator.java)
 
+[movies/src/main/resources/application.properties](movies/src/main/resources/application.properties)
 
-movies/src/main/resources/application.properties
-
-https://www.baeldung.com/spring-profiles
 
 [4. Hafta ödevindeki isbası uygulamasına eklenen test profili](https://github.com/LogoYazilimJavaSpringBootcamp/homework-4-mustafa-001/commit/3235916740e22516f68e730ca2feb6e73290a449)
 
@@ -36,7 +34,6 @@ String paymentId = 5;
 
 Korunmak için veritabanı kullanıcı ve yetki kontrolü,  Data Sanitization, `NamedTemplate`, SQL escaping gibi yöntemler kullanılmalıdır. Burada ana mantık kullanıcıdan gelen girdinin SQL'de komut olarak çalıştırlmasını engellemektdir.
 
-https://www.baeldung.com/sql-injection
 
 3. Aşağıdaki kurallara göre bir film öneri uygulaması yazın. (90 Puan)
 
