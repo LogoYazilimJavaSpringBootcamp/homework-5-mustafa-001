@@ -18,7 +18,7 @@ import mutlu.movies.repository.MovieRepository;
 import mutlu.movies.repository.UserRepository;
 
 @Component
-//Only generate when "dev" profile is activate through application.propertie.
+//Only generate when "dev" profile is activated through application.properties.
 @Profile("dev")
 public class DataGenerator {
     private final UserRepository userRepository;
@@ -79,13 +79,13 @@ public class DataGenerator {
 
         Comment comment1 = new Comment();
         comment1.setMovie(movie1);
-        comment1.setText("Güzel filmt");
+        comment1.setText("Güzel film.");
         comment1.setUser(user1);
         commentRepository.save(comment1);
 
         Comment comment2 = new Comment();
         comment2.setMovie(movie1);
-        comment2.setText("Güzel film.");
+        comment2.setText("Çok uzun");
         comment2.setUser(user1);
         commentRepository.save(comment2);
         userRepository.flush();

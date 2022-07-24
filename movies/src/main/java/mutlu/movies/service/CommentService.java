@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Responsible for adding, deleteting and querying by user, movie and updating
+ * Responsible for adding, deleting and querying by user, movie and updating
  * {@link Comment}'s
  */
 @Service
@@ -46,7 +46,7 @@ public class CommentService {
         final var user = userRepository.findById(request.getUser().getUserId())
                 .orElseThrow(() -> new RuntimeException("User cannot be found"));
         final var movie = movieRepository.findById(request.getMovie().getMovieId())
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(RuntimeException::new);
 
         if (!user.isPremium()) {
             log.info("Couldn't save comment because User: {} is not paid user", user.getUserId());
@@ -64,7 +64,6 @@ public class CommentService {
     }
 
     /**
-     * @param username
      * @return Comments associated with a {@link User} with a given username. If
      *         username doesn't exist empty List will be returned.
      */
@@ -74,7 +73,6 @@ public class CommentService {
     }
 
     /**
-     * @param movieId
      * @return Comment's associated with a given movieId. If movieId doesn't exist
      *         empty List will be returned.
      */
@@ -91,7 +89,6 @@ public class CommentService {
      * Deletes the comment wiht given id.
      * If this id doesn't exists it is ignored.
      * 
-     * @param commentId
      */
     public void delete(Long commentId) {
         commentRepository.deleteById(commentId);

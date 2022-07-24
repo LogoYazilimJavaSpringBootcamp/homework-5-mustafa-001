@@ -10,6 +10,7 @@ services:
 
   movies-email-service:
     build:  movies-email-service
+    
   movies_db:
     container_name: movies-db
     image: postgres:latest

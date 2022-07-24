@@ -28,11 +28,11 @@ public class User {
     //Doesn't need setter with @JsonPreference annotation and a
     // List<Long> argument as Movie.comments field because we don't ever
     // need to deserialize a User with Comment and Movie already filled.
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     @JsonIdentityReference(alwaysAsId = true)
     private List<Movie> movies;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     @JsonIdentityReference(alwaysAsId = true)
     private List<Comment> comments;
 

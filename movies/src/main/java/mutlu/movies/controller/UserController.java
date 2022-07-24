@@ -32,6 +32,7 @@ public class UserController {
               "premiumUntil": "2022-01-01T12:13:55.085Z"
             }""";
     static private final String loginDtoExample = """
+            {
             'username':	'User 1',
             'password':	'şifre'
             }""";
@@ -42,13 +43,13 @@ public class UserController {
              }""";
     static private final String changeUsernameDtoExample = """
             {
-              "username": "User 1",
+              "username": "username1",
               "newUsername": "New Username",
               "password": "şifre"
             }""";
     static private final String changePasswordDtoExample = """
             {
-               "username": "User 1",
+               "username": "username1",
                "password": "şifre",
                "firstNewPassword": "yeni şifre",
                "secondNewPassword": "yeni şifre"

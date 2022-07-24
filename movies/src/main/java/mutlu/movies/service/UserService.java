@@ -110,7 +110,7 @@ public class UserService {
             userRepository.flush();
             log.debug("Password hash after flush {}", userRepository.findById(user.getUserId()).get().getPasswordHash());
         } else {
-            throw new RuntimeException("The passwords does not match.");
+            throw new RuntimeException("Passwords does not match.");
         }
         return user;
     }
@@ -118,6 +118,7 @@ public class UserService {
     /**
      * Makes a request to payment service with PaymentDetails and if response is true
      * update said user's premiumUntil field to {@link mutlu.movies.dto.PaymentType} months later.
+     * For synchronous request using RabbitMQ Remote Procedure Call. {@link <a href="https://www.rabbitmq.com/tutorials/tutorial-six-spring-amqp.html">...</a>}
      */
     public User makePayment(PaymentDto paymentDetailsDto) {
         var userOpt = userRepository.findById(paymentDetailsDto.getUserId());
@@ -133,10 +134,10 @@ public class UserService {
                 throw new RuntimeException("An error occurred when processing payment.");
             } else if (reply) {
                 log.debug("userId: {}, premiumUntil: {}", user.getUserId(), user.getPremiumUntil());
-                user.setPremiumUntil(LocalDateTime.now().plusMonths(paymentDetailsDto.getPaymentType().ordinal()));
+                user.setPremiumUntil(LocalDateTime.now().plusMonths(paymentDetailsDto.getPaymentType().getValue()));
                 userRepository.flush();
                 log.info("Updated user to {}", user);
-            } else if (!reply){
+            } else {
                 log.info("Payment service didn't authorize payment.");
                 throw new RuntimeException("An error occurred when processing payment.");
             }

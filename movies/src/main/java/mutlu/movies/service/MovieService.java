@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,12 +29,15 @@ public class MovieService {
         this.rabbitTemplate = rabbitTemplate;
     }
 
+    public List<Movie> getAll(){
+        return movieRepository.findAll();
+    }
+
     /**
      * Checks if given userId corresponds to existing user, if not throws an
      * exception.
      * Checks if user is capable of adding more than 3 movies.
      * 
-     * @param request
      * @return If all checks are succesfull saves the request and returns it with
      *         movieId assigned.
      */
@@ -45,6 +49,7 @@ public class MovieService {
         log.debug("Movies by this user: {} ", movieCount);
         if (movieCount <= 3 || user.isPremium()) {
             try {
+                //Send an email request to email service for each user.
                 userRepository.findAll().forEach(registeredUser -> {
                     log.info("Sending message to email service {}", registeredUser.getEmail());
                     rabbitTemplate.convertAndSend("movies.email", new EmailDto(registeredUser.getEmail(),
@@ -62,15 +67,14 @@ public class MovieService {
     }
 
     /**
-     * @param username
      * @return List of {@link Movie} by given username.
      */
     public Collection<Movie> getByUsername(String username) {
         return movieRepository.findByUser_Username(username);
     }
 
-    public Optional<Movie> getById(Long movieId) {
-        return movieRepository.findById(movieId);
+    public Movie getById(Long movieId) {
+        return movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie with given Id cannot be found."));
     }
 
     public Movie update(Movie request, Long movieId) {
@@ -81,7 +85,6 @@ public class MovieService {
      * Deletes the {@link Movie} with given movieId.
      * If entity doesn't exist an exception is thrown.
      * 
-     * @param movieId
      */
     public void delete(Long movieId) {
         movieRepository.deleteById(movieId);

@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,15 +30,21 @@ public class MovieController {
         this.movieService = movieService;
     }
 
+    @Operation(summary = "Get all movies.")
+    @GetMapping
+    public List<Movie> getAll(){
+        return movieService.getAll();
+    }
+
     @Operation(summary = "Get movies added by User with given username.")
     @GetMapping("/user/{username}")
-    public Collection<Movie> getByUserId(@PathVariable @Parameter(example = "User 1") String username) {
+    public Collection<Movie> getByUserId(@PathVariable @Parameter(example = "username1") String username) {
         return movieService.getByUsername(username);
     }
 
     @Operation(summary = "Get the movie by movie Id.")
     @GetMapping("/{movieId}")
-    public Optional<Movie> getByMovieId(@PathVariable @Parameter(example = "10") Long movieId) {
+    public Movie getByMovieId(@PathVariable @Parameter(example = "4") Long movieId) {
         return movieService.getById(movieId);
     }
 
@@ -55,13 +62,13 @@ public class MovieController {
     public Movie update(@RequestBody
                         @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(examples = @ExampleObject(value = movieRequestBodyExample),
                                 mediaType = MediaType.APPLICATION_JSON_VALUE))
-                        Movie request, @PathVariable @Parameter(example = "10") Long movieId) {
+                        Movie request, @PathVariable @Parameter(example = "4") Long movieId) {
         return movieService.update(request, movieId);
     }
 
     @Operation(summary = "Delete the movie with given movie Id.")
     @DeleteMapping("/{movieId}")
-    public void delete(@PathVariable @Parameter(example = "10") Long movieId) {
+    public void delete(@PathVariable @Parameter(example = "4") Long movieId) {
         movieService.delete(movieId);
     }
 }
